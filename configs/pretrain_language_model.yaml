@@ -8,11 +8,11 @@ global:
 dataset:
   train: {
     roots: ['data/language/lang_train.csv'],
-    batch_size: 500
+    batch_size: 1000
   }
   test: {
     roots: ['data/language/lang_test.csv'],
-    batch_size: 500
+    batch_size: 1000
   }
 
 training:
