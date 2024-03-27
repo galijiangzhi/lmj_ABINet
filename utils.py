@@ -11,6 +11,7 @@ from matplotlib import pyplot as plt
 from torch import Tensor, nn
 from torch.utils.data import ConcatDataset
 
+
 class CharsetMapper(object):
     """A simple class to map ids into strings.
 
@@ -30,6 +31,7 @@ class CharsetMapper(object):
           null_char: A unicode character used to replace '<null>' character.
             the default value is a light shade block '░'.
         """
+
         self.null_char = null_char
         self.max_length = max_length
 
@@ -52,15 +54,13 @@ class CharsetMapper(object):
         charset = {}
         self.null_label = 0
         charset[self.null_label] = self.null_char
-        with open(filename, 'r') as f:
+        with open(filename, 'r') as f:  # encoding='UTF-8'
             for i, line in enumerate(f):
                 m = pattern.match(line)
                 assert m, f'Incorrect charset file. line #{i}: {line}'
                 label = int(m.group(1)) + 1
                 char = m.group(2)
                 charset[label] = char
-                if char in 'ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ':
-                    charset[label] = char
         return charset
 
     def trim(self, text):
@@ -73,7 +73,7 @@ class CharsetMapper(object):
         length = length if length else self.max_length
         labels = [l.item() if isinstance(l, Tensor) else int(l) for l in labels]
         if padding:
-            labels = labels + [self.null_label] * (length-len(labels))
+            labels = labels + [self.null_label] * (length - len(labels))
         text = ''.join([self.label_to_char[label] for label in labels])
         if trim: text = self.trim(text)
         return text
@@ -82,7 +82,6 @@ class CharsetMapper(object):
         """ Returns the labels of the corresponding text.
         """
         length = length if length else self.max_length
-        print(f'baizhen-------{text}')
         if padding:
             text = text + self.null_char * (length - len(text))
         if not case_sensitive:
@@ -108,7 +107,7 @@ class CharsetMapper(object):
         all_chars = list(self.char_to_label.keys())
         valid_chars = []
         for c in all_chars:
-            if c in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ':
+            if c in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ':  # ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ
                 valid_chars.append(c)
         return ''.join(valid_chars)
 
@@ -119,6 +118,7 @@ class CharsetMapper(object):
 
 class Timer(object):
     """A simple timer."""
+
     def __init__(self):
         self.data_time = 0.
         self.data_diff = 0.
@@ -149,7 +149,7 @@ class Timer(object):
         return self.data_total_time + self.running_total_time
 
     def average_time(self):
-        return  self.average_data_time() + self.average_running_time()
+        return self.average_data_time() + self.average_running_time()
 
     def average_data_time(self):
         return self.data_total_time / (self.data_call or 1)
@@ -165,11 +165,13 @@ class Logger(object):
     @staticmethod
     def init(output_dir, name, phase):
         format = '[%(asctime)s %(filename)s:%(lineno)d %(levelname)s {}] ' \
-                '%(message)s'.format(name)
+                 '%(message)s'.format(name)
         logging.basicConfig(level=logging.INFO, format=format)
 
-        try: os.makedirs(output_dir)
-        except: pass
+        try:
+            os.makedirs(output_dir)
+        except:
+            pass
         config_path = os.path.join(output_dir, f'{phase}.txt')
         Logger._handle = logging.FileHandler(config_path)
         Logger._root = logging.getLogger()
@@ -231,30 +233,32 @@ class Config(object):
         str += ')'
         return str
 
+
 def blend_mask(image, mask, alpha=0.5, cmap='jet', color='b', color_alpha=1.0):
     # normalize mask
-    mask = (mask-mask.min()) / (mask.max() - mask.min() + np.finfo(float).eps)
+    mask = (mask - mask.min()) / (mask.max() - mask.min() + np.finfo(float).eps)
     if mask.shape != image.shape:
-        mask = cv2.resize(mask,(image.shape[1], image.shape[0]))
+        mask = cv2.resize(mask, (image.shape[1], image.shape[0]))
     # get color map
     color_map = plt.get_cmap(cmap)
-    mask = color_map(mask)[:,:,:3]
+    mask = color_map(mask)[:, :, :3]
     # convert float to uint8
     mask = (mask * 255).astype(dtype=np.uint8)
 
     # set the basic color
-    basic_color = np.array(colors.to_rgb(color)) * 255 
-    basic_color = np.tile(basic_color, [image.shape[0], image.shape[1], 1]) 
+    basic_color = np.array(colors.to_rgb(color)) * 255
+    basic_color = np.tile(basic_color, [image.shape[0], image.shape[1], 1])
     basic_color = basic_color.astype(dtype=np.uint8)
     # blend with basic color
-    blended_img = cv2.addWeighted(image, color_alpha, basic_color, 1-color_alpha, 0)
+    blended_img = cv2.addWeighted(image, color_alpha, basic_color, 1 - color_alpha, 0)
     # blend with mask
-    blended_img = cv2.addWeighted(blended_img, alpha, mask, 1-alpha, 0)
+    blended_img = cv2.addWeighted(blended_img, alpha, mask, 1 - alpha, 0)
 
     return blended_img
 
+
 def onehot(label, depth, device=None):
-    """ 
+    """
     Args:
         label: shape (n1, n2, ..., )
         depth: a scalar
@@ -269,6 +273,7 @@ def onehot(label, depth, device=None):
 
     return onehot
 
+
 class MyDataParallel(nn.DataParallel):
 
     def gather(self, outputs, target_device):
@@ -276,6 +281,7 @@ class MyDataParallel(nn.DataParallel):
         Gathers tensors from different GPUs on a specified device
         (-1 means the CPU).
         """
+
         def gather_map(outputs):
             out = outputs[0]
             if isinstance(out, (str, int, float)):
@@ -290,7 +296,7 @@ class MyDataParallel(nn.DataParallel):
                 if not all((len(out) == len(d) for d in outputs)):
                     raise ValueError('All dicts must have the same number of keys')
                 return type(out)(((k, gather_map([d[k] for d in outputs]))
-                                for k in out))
+                                  for k in out))
             return type(out)(map(gather_map, zip(*outputs)))
 
         # Recursive function calls like this create reference cycles.
@@ -303,5 +309,5 @@ class MyDataParallel(nn.DataParallel):
 
 
 class MyConcatDataset(ConcatDataset):
-    def __getattr__(self, k): 
+    def __getattr__(self, k):
         return getattr(self.datasets[0], k)
