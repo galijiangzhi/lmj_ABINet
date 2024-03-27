@@ -80,6 +80,7 @@ class CharsetMapper(object):
         """ Returns the labels of the corresponding text.
         """
         length = length if length else self.max_length
+        print(f'baizhen-------{text}')
         if padding:
             text = text + self.null_char * (length - len(text))
         if not case_sensitive:
