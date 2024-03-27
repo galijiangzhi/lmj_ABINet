@@ -7,11 +7,11 @@ global:
  
 dataset:
   train: {
-    roots: ['data/WikiText-103.csv'],
+    roots: ['data/language/lang_train.csv'],
     batch_size: 200
   }
   test: {
-    roots: ['data/WikiText-103_eval_d1.csv'],
+    roots: ['data/language/lang_test.csv'],
     batch_size: 200
   }
 
