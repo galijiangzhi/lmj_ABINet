@@ -20,7 +20,7 @@ class CharsetMapper(object):
 
     def __init__(self,
                  filename='',
-                 max_length=50,
+                 max_length=30,
                  null_char=u'\u2591'):
         """Creates a lookup table.
 
