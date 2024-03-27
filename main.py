@@ -16,6 +16,7 @@ from utils import Config, Logger, MyDataParallel, MyConcatDataset
 
 
 def _set_random_seed(seed):
+    # 这个函数用于设置随机种子，以确保在训练过程中的可重现性。
     if seed is not None:
         random.seed(seed)
         torch.manual_seed(seed)
@@ -24,6 +25,7 @@ def _set_random_seed(seed):
                         'This will slow down your training!')
 
 def _get_training_phases(config, n):
+    # 这个函数根据配置和迭代次数生成学习率调度的训练阶段。
     lr = np.array(config.optimizer_lr)
     periods = config.optimizer_scheduler_periods
     sigma = [config.optimizer_scheduler_gamma ** i for i in range(len(periods))]
@@ -32,6 +34,7 @@ def _get_training_phases(config, n):
     return phases
 
 def _get_dataset(ds_type, paths, is_training, config, **kwargs):
+    # 这个函数用于根据数据集类型、路径和其他配置参数获取图像或文本数据集。
     kwargs.update({
         'img_h': config.dataset_image_height,
         'img_w': config.dataset_image_width,
@@ -49,7 +52,8 @@ def _get_dataset(ds_type, paths, is_training, config, **kwargs):
     else: return datasets[0]
 
 
-def _get_language_databaunch(config):
+def _get_language_databaunch(config)
+    # 这个函数使用指定的配置构建语言数据集。
     kwargs = {
         'max_length': config.dataset_max_length,
         'case_sensitive': config.dataset_case_sensitive,
@@ -74,7 +78,8 @@ def _get_language_databaunch(config):
         logging.info(f'{len(data.valid_ds)} valid items found.')
     return data
 
-def _get_databaunch(config):
+def _ge_dtatabaunch(config):
+    # 这个函数使用指定的配置构建图像数据集。
     # An awkward way to reduce loadding data time during test
     if config.global_phase == 'test': config.dataset_train_roots = config.dataset_test_roots
     train_ds = _get_dataset(ImageDataset, config.dataset_train_roots, True, config)
@@ -96,6 +101,7 @@ def _get_databaunch(config):
     return data
 
 def _get_model(config):
+    # 这个函数根据配置加载和构建模型。
     import importlib
     names = config.model_name.split('.')
     module_name, class_name = '.'.join(names[:-1]), names[-1]
@@ -106,6 +112,7 @@ def _get_model(config):
 
 
 def _get_learner(config, data, model, local_rank=None):
+    # 这个函数根据提供的数据、模型和本地排名（用于分布式训练）创建学习器对象，用于训练或测试模型。
     strict = ifnone(config.model_strict, True)
     if config.global_stage == 'pretrain-language':
         metrics = [TopKTextAccuracy(
@@ -185,19 +192,31 @@ def _get_learner(config, data, model, local_rank=None):
     return learner
 
 def main():
+    # 解析命令行参数，初始化日志记录，设置随机种子，构建数据集、模型和学习器，并根据指定的阶段开始训练或验证。
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, required=True,
                         help='path to config file')
+    # 指定配置文件的路径，其中包含了模型、数据和训练参数的设置。
     parser.add_argument('--phase', type=str, default=None, choices=['train', 'test'])
+    # 指定训练的阶段，可选值为'train'（训练）或'test'（测试）。
     parser.add_argument('--name', type=str, default=None)
+    # 指定训练过程的名称或标识符。
     parser.add_argument('--checkpoint', type=str, default=None)
+    # 指定用于恢复训练的检查点文件的路径。
     parser.add_argument('--test_root', type=str, default=None)
+    # 指定用于测试的数据集根目录的路径。
     parser.add_argument("--local_rank", type=int, default=None)
+    # 指定本地排名，用于分布式训练。
     parser.add_argument('--debug', action='store_true', default=None)
+    # 设置为True以启用调试模式。
     parser.add_argument('--image_only', action='store_true', default=None)
+    # 设置为True以指示仅使用图像数据进行训练或测试。
     parser.add_argument('--model_strict', action='store_false', default=None)
+    # 设置为False以禁用模型的严格性检查。
     parser.add_argument('--model_eval', type=str, default=None, 
                         choices=['alignment', 'vision', 'language'])
+    # 指定要评估的模型类型，可选值为'alignment'（对齐）、'vision'（视觉）或'language'（语言）。
     args = parser.parse_args()
     config = Config(args.config)
     if args.name is not None: config.global_name = args.name
@@ -213,8 +232,10 @@ def main():
     Logger.enable_file()
     _set_random_seed(config.global_seed)
     logging.info(config)
+    # 根据命令行参数更新配置对象的属性，并进行一些初始化操作，以便在脚本中使用这些配置
 
     if args.local_rank is not None:
+        # 检查是否使用分布式训练
         logging.info(f'Init distribution training at device {args.local_rank}.')
         torch.cuda.set_device(args.local_rank)
         torch.distributed.init_process_group(backend='nccl', init_method='env://')
@@ -241,6 +262,5 @@ def main():
                   f'ted = {last_metrics[3]:6.3f},  ned = {last_metrics[4]:6.0f},  ' \
                   f'ted/w = {last_metrics[5]:6.3f}, '
         logging.info(log_str)
-
 if __name__ == '__main__':
     main()

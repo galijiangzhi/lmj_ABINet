@@ -52,7 +52,7 @@ for line in tqdm(lines, desc='Create train set'):
     inp.append(line)
     gt.append(line)
 del lines
-train_voc = os.path.join(root, 'VN_ENG.csv')
+train_voc = os.path.join(root, 'lang_test.csv')
 pd.DataFrame({'inp': inp, 'gt': gt}).to_csv(train_voc, index=None, sep='\t')
 del gt
 

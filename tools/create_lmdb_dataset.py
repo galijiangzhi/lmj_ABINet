@@ -9,6 +9,7 @@ from tqdm import tqdm
 
 
 def checkImageIsValid(imageBin):
+    # 检查图像是否有效。它首先检查图像是否为空，然后将图像二进制数据转换为NumPy数组，并使用OpenCV解码为灰度图像。最后，它检查图像的高度和宽度是否为零。
     if imageBin is None:
         return False
     imageBuf = np.frombuffer(imageBin, dtype=np.uint8)
@@ -20,6 +21,7 @@ def checkImageIsValid(imageBin):
 
 
 def writeCache(env, cache):
+    # 将数据写入LMDB数据库。它使用LMDB环境和缓存字典，并将缓存中的数据写入数据库。
     with env.begin(write=True) as txn:
         for k, v in cache.items():
             txn.put(k, v)
@@ -27,6 +29,7 @@ def writeCache(env, cache):
 
 def createDataset(inputPath, gtFile, outputPath, checkValid=True, map_size=5073741824):
     """
+    这是一个函数，用于创建 LMDB 数据集。它接受输入文件夹路径、GT 文件（包含图像路径和标签）、输出路径以及其他可选参数。函数的文档字符串提供了参数的详细说明。
     Create LMDB dataset for training and evaluation.
     ARGS:
         inputPath  : input folder path where starts imagePath
