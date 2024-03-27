@@ -52,7 +52,7 @@ def _get_dataset(ds_type, paths, is_training, config, **kwargs):
     else: return datasets[0]
 
 
-def _get_language_databaunch(config):
+def _get_language_databaunch(config)
     # 这个函数使用指定的配置构建语言数据集。
     kwargs = {
         'max_length': config.dataset_max_length,
@@ -78,7 +78,7 @@ def _get_language_databaunch(config):
         logging.info(f'{len(data.valid_ds)} valid items found.')
     return data
 
-def _ge_dtatabaunch(config):
+def _get_databaunch(config):
     # 这个函数使用指定的配置构建图像数据集。
     # An awkward way to reduce loadding data time during test
     if config.global_phase == 'test': config.dataset_train_roots = config.dataset_test_roots
@@ -262,5 +262,6 @@ def main():
                   f'ted = {last_metrics[3]:6.3f},  ned = {last_metrics[4]:6.0f},  ' \
                   f'ted/w = {last_metrics[5]:6.3f}, '
         logging.info(log_str)
+
 if __name__ == '__main__':
     main()
