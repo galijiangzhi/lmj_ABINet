@@ -36,7 +36,7 @@ class CharsetMapper(object):
         self.label_to_char = self._read_charset(filename)
         self.char_to_label = dict(map(reversed, self.label_to_char.items()))
         self.num_classes = len(self.label_to_char)
- 
+
     def _read_charset(self, filename):
         """Reads a charset definition from a tab separated text file.
 
@@ -59,6 +59,8 @@ class CharsetMapper(object):
                 label = int(m.group(1)) + 1
                 char = m.group(2)
                 charset[label] = char
+                if char in 'ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ':
+                    charset[label] = char
         return charset
 
     def trim(self, text):
@@ -106,7 +108,7 @@ class CharsetMapper(object):
         all_chars = list(self.char_to_label.keys())
         valid_chars = []
         for c in all_chars:
-            if c in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ':
+            if c in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ':
                 valid_chars.append(c)
         return ''.join(valid_chars)
 
