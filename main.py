@@ -52,7 +52,7 @@ def _get_dataset(ds_type, paths, is_training, config, **kwargs):
     else: return datasets[0]
 
 
-def _get_language_databaunch(config)
+def _get_language_databaunch(config):
     # 这个函数使用指定的配置构建语言数据集。
     kwargs = {
         'max_length': config.dataset_max_length,
