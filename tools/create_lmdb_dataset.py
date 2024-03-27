@@ -90,7 +90,7 @@ def createDataset(inputPath, gtFile, outputPath, checkValid=True, map_size=50737
 
 
 if __name__ == '__main__':
-    # createDataset(r'E:\text_recognize_data\syntext_word', r'E:\text_recognize_data\syntext_word\real_synth.txt', r'E:\text_recognize_data\syntext_word\lmdb')
+    # createDataset(r'E:\text_recognize_data\syntext_word', r'E:\text_recognize_data\syntext_word\real_synth.txt', r'E:\text_recognize_data\syntext_word\lmdb_train')
     createDataset(r'E:\text_recognize_data\syntext_line\synth', r'E:\text_recognize_data\syntext_line\synth\gt.txt',
                   r'E:\text_recognize_data\syntext_line\lmdb', map_size=5073741824)
     createDataset(r'E:\text_recognize_data\syntext_line\synth_test',

@@ -9,7 +9,7 @@ RUN sudo rm -rf /etc/apt/sources.list.d && \
     pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && \
     pip install torch==1.1.0 torchvision==0.3.0 && \
     pip install fastai==1.0.60 && \
-    pip install ipdb jupyter ipython lmdb editdistance tensorboardX natsort nltk && \
+    pip install ipdb jupyter ipython lmdb_train editdistance tensorboardX natsort nltk && \
     conda uninstall -y --force pillow pil jpeg libtiff libjpeg-turbo && \
     pip uninstall -y pillow pil jpeg libtiff libjpeg-turbo && \
     conda install -yc conda-forge libjpeg-turbo && \

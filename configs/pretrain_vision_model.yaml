@@ -7,20 +7,18 @@ global:
  
 dataset:
   train: {
-    roots: ['data/training/MJ/MJ_train/', 
-            'data/training/MJ/MJ_test/', 
-            'data/training/MJ/MJ_valid/', 
-            'data/training/ST'],
-    batch_size: 384
+    roots: ['data/vision/xunlian_train',
+            'data/vision/lmdb_train',
+            'data/vision/lmj_train',
+    ],
+    batch_size: 50
   }
   test: {
-    roots: ['data/evaluation/IIIT5k_3000', 
-            'data/evaluation/SVT', 
-            'data/evaluation/SVTP',
-            'data/evaluation/IC13_857',
-            'data/evaluation/IC15_1811',
-            'data/evaluation/CUTE80'],
-    batch_size: 384
+    roots: ['data/vision/xunlian_test',
+            'data/vision/lmdb_test',
+            'data/vision/lmj_test',
+    ],
+    batch_size: 50
   }
   data_aug: True
   multiscales: False
