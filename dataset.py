@@ -144,6 +144,8 @@ class ImageDataset(Dataset):
     def __getitem__(self, idx):
         image, text, idx_new = self.get(idx)
         # print(image, text, idx_new, idx)
+        print(f'baizhen--------------------------------------------------------------------------------')
+        print(f'baizhen----------idx{idx}')
         print(f'baizhen----------img{image}')
         print(f'baizhen----------text{text}')
         print(f'baizhen----------idx_new{idx_new}')
