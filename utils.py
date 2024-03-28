@@ -58,14 +58,14 @@ class CharsetMapper(object):
         charset[self.null_label] = self.null_char   # 将'<null>'字符映射到标签
         with open(filename, 'r') as f:
             for i, line in enumerate(f):
-                print(f"baizhen----------i={i}")
+                # print(f"baizhen----------i={i}")
                 m = pattern.match(line)
                 assert m, f'Incorrect charset file. line #{i}: {line}'
                 label = int(m.group(1)) + 1
-                print(f"baizhen----------label={label}")
+                # print(f"baizhen----------label={label}")
                 char = m.group(2)
                 charset[label] = char
-                print(f"baizhen----------char_set={charset}")
+                # print(f"baizhen----------char_set={charset}")
         return charset
 
     def trim(self, text):
