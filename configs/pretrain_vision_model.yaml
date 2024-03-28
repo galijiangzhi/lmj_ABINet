@@ -8,15 +8,15 @@ global:
 dataset:
   train: {
     roots: ['data/vision/xunlian_train',
-            'data/vision/lmdb_train',
-            'data/vision/lmj_train',
+#            'data/vision/lmdb_train',
+#            'data/vision/lmj_train',
     ],
     batch_size: 50
   }
   test: {
     roots: ['data/vision/ceshi_test',
-            'data/vision/lmdb_test',
-            'data/vision/lmj_test',
+#            'data/vision/lmdb_test',
+#            'data/vision/lmj_test',
     ],
     batch_size: 50
   }
