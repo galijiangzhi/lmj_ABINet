@@ -54,5 +54,5 @@ model:
     loss_weight: 1.,
     attention: 'position',
     backbone: 'transformer',
-    backbone_ln: 3,
+    backbone_ln: 2,
   }
