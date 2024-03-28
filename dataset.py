@@ -145,8 +145,8 @@ class ImageDataset(Dataset):
         image, text, idx_new = self.get(idx)
         # print(image, text, idx_new, idx)
         print(f'baizhen----------img{image}')
-        print(f'baizhen----------img{text}')
-        print(f'baizhen----------img{idx_new}')
+        print(f'baizhen----------text{text}')
+        print(f'baizhen----------idx_new{idx_new}')
         if not self.is_training: assert idx == idx_new, f'idx {idx} != idx_new {idx_new} during testing.'
 
         if self.is_training:
