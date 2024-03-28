@@ -14,7 +14,7 @@ dataset:
     batch_size: 50
   }
   test: {
-    roots: ['data/vision/xunlian_test',
+    roots: ['data/vision/ceshi_test',
             'data/vision/lmdb_test',
             'data/vision/lmj_test',
     ],
