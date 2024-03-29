@@ -27,9 +27,9 @@ dataset:
   num_workers: 14
 
 training:
-  epochs: 8
+  epochs: 20
   show_iters: 50
-  eval_iters: 3000
+  eval_iters: 30
   save_iters: 30
 
 optimizer:
