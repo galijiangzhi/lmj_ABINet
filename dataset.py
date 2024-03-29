@@ -23,7 +23,7 @@ class ImageDataset(Dataset):
                  check_length: bool = True,
                  case_sensitive: bool = False,
                  # charset_path: str = 'data/charset_vn_with_space.txt',
-                 charset_path: str = 'data/tibetan_charset_line.txt', #字符集文件的路径。该文件包含了数据集中可能出现的字
+                 charset_path: str = 'data/tibetan_charset.txt', #字符集文件的路径。该文件包含了数据集中可能出现的字
                  convert_mode: str = 'RGB', #图像转换模式
                  data_aug: bool = True,
                  deteriorate_ratio: float = 0.,
@@ -122,7 +122,10 @@ class ImageDataset(Dataset):
 
 
                 if not set(label).issubset(self.character):
-                    print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}  中有不属于数据集的内容')
+                    print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}  中有不属于数据集的内容详情如下')
+                    for i in label :
+                        if not set(i).issubset(self.character):
+                            print(f'{i} not in data')
                     return self._next_image(idx)    #这行代码检查标签中的字符是否都属于字符集self.character。如果有字符不属于字符集，则调用self._next_image(idx)方法获取下一张图像和标签。
                 # label = re.sub('[^0-9a-zA-Z]+', '', label)
                 if self.check_length and self.max_length > 0:   #判断长度是否合法，不合法就跳过
