@@ -47,6 +47,7 @@ optimizer:
     gamma: 0.1,
   }
 dataset_charset_path: data/vision/tibetan_chars.txt
+#设置路径
 model:
   name: 'modules.model_vision.BaseVision'
   checkpoint: ~
