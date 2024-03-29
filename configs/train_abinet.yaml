@@ -24,13 +24,13 @@ dataset:
   }
   data_aug: True
   multiscales: False
-  num_workers: 14
+  num_workers: 6 #数据加载的线程数
 
 training:
-  epochs: 10
+  epochs: 20
   show_iters: 50
-  eval_iters: 3000
-  save_iters: 3000
+  eval_iters: 20
+  save_iters: 20
 
 optimizer:
   type: Adam
