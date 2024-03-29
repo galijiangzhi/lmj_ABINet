@@ -23,7 +23,7 @@ class ImageDataset(Dataset):
                  check_length: bool = True,
                  case_sensitive: bool = False,
                  # charset_path: str = 'data/charset_vn_with_space.txt',
-                 charset_path: str = 'data/vision/text.txt', #字符集文件的路径。该文件包含了数据集中可能出现的字
+                 charset_path: str = 'data/tibetan_charset.txt', #字符集文件的路径。该文件包含了数据集中可能出现的字
                  convert_mode: str = 'RGB', #图像转换模式
                  data_aug: bool = True,
                  deteriorate_ratio: float = 0.,
