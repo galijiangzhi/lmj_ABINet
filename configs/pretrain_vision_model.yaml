@@ -1,8 +1,8 @@
 global:
-  name: pretrain-vision-model
+  name: pretrain-vision-tibetan-model
   phase: train
   stage: pretrain-vision
-  workdir: workdir
+  workdir: bz
   seed: ~
  
 dataset:
@@ -29,8 +29,8 @@ dataset:
 training:
   epochs: 20
   show_iters: 50
-  eval_iters: 20
-  save_iters: 20
+  eval_iters: 100
+  save_iters: 100
 
 optimizer:
   type: Adam
@@ -54,5 +54,5 @@ model:
     loss_weight: 1.,
     attention: 'position',
     backbone: 'transformer',
-    backbone_ln: 2,
+    backbone_ln: 3,
   }
