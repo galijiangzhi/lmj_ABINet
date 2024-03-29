@@ -35,7 +35,7 @@ optimizer:
     periods: [70, 10],
     gamma: 0.1,
   }
-dataset_charset_path: data/vision/text.txt
+dataset_charset_path: data/vision/tibetan_charset.txt
 
 model:
   name: 'modules.model_language.BCNLanguage'

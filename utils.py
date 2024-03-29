@@ -19,7 +19,7 @@ class CharsetMapper(object):
     """
 
     def __init__(self,
-                 filename='data/tibetan_charset.txt',
+                 filename='',
                  max_length=30,
                  null_char=u'\u2591'):
         """Creates a lookup table.
