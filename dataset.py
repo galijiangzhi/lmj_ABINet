@@ -140,7 +140,7 @@ class ImageDataset(Dataset):
                     # logging.info(f'Invalid image is found: {self.name}, {idx}, {label}, {len(label)}')
                     return self._next_image(idx)
             except:
-                print(f'baizhen----------有一张图片处理失败 信息如下 name={self.name} idx={idx} label={label}')
+                print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!有一张图片处理失败 信息如下 name={self.name} idx={idx} label={label}')
                 import traceback
                 traceback.print_exc()
                 logging.info(f'Corrupted image is found: {self.name}, {idx}, {label}, {len(label)}')
@@ -162,10 +162,7 @@ class ImageDataset(Dataset):
         image, text, idx_new = self.get(idx) #使用get方法获取图像，文本，新的索引
         # print(image, text, idx_new, idx)
         print(f'baizhen--------------------------------------------------------------------------------')
-        print(f'baizhen----------idx{idx}')
-        print(f'baizhen----------img{image}')
-        print(f'baizhen----------text{text}')
-        print(f'baizhen----------idx_new{idx_new}')
+        print(f'baizhen----------idx{idx} image.shape={image}       text{text}     idx_new{idx_new} ')
         if not self.is_training: assert idx == idx_new, f'idx {idx} != idx_new {idx_new} during testing.' #在非训练模式下检查索引idx是否与新的索引值idx_new相等。如果不相等，会抛出一个断言错误。
 
         if self.is_training:
