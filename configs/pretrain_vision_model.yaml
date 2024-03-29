@@ -30,7 +30,7 @@ training:
   epochs: 8
   show_iters: 50
   eval_iters: 3000
-  save_iters: 3000
+  save_iters: 30
 
 optimizer:
   type: Adam
