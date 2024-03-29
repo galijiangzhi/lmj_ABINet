@@ -36,7 +36,7 @@ class CharsetMapper(object):
         self.label_to_char = self._read_charset(filename)
         self.char_to_label = dict(map(reversed, self.label_to_char.items()))
         self.num_classes = len(self.label_to_char)
-
+        print(f'baizhen___________frlename={filename}')
     def _read_charset(self, filename):
         """Reads a charset definition from a tab separated text file.
         从一个以制表符分隔的文本文件中读取字符集定义。
@@ -65,7 +65,7 @@ class CharsetMapper(object):
                 # print(f"baizhen----------label={label}")
                 char = m.group(2)
                 charset[label] = char
-                print(f'baizhen___________frlename={filename}____________utils.charset={charset}')
+                # print(f'baizhen___________frlename={filename}____________utils.charset={charset}')
         return charset
 
     def trim(self, text):
