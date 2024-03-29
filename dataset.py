@@ -122,7 +122,7 @@ class ImageDataset(Dataset):
                 print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}')
 
 
-                if not set(label).issubset(self.character):
+                if not set(label.replace('།','')).issubset(self.character):
                     print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}  中有不属于数据集的内容详情如下')
                     for i in label :
                         if not set(i).issubset(self.character):
