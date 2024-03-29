@@ -19,7 +19,7 @@ training:
   epochs: 80 #迭代次数
   show_iters: 50 #迭代多少次显示一次训练信息
   eval_iters: 6000 #多少次迭代进行一次模型评估
-  save_iters: 3000 #每隔多少次迭代保存一次模型参数
+  save_iters: 20 #每隔多少次迭代保存一次模型参数
 
 optimizer:
   type: Adam
