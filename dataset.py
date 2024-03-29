@@ -93,8 +93,7 @@ class ImageDataset(Dataset):
             top, bottom = math.ceil(pad_h), math.floor(pad_h)
             left, right = math.ceil(pad_w), math.floor(pad_w)
             img = cv2.copyMakeBorder(img, top, bottom, left, right, borderType)
-            return img
-
+            return im
         if self.is_training:
             if random.random() < 0.5:
                 base, maxh, maxw = self.img_h, self.img_h, self.img_w
