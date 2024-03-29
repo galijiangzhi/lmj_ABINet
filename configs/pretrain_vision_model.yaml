@@ -27,10 +27,10 @@ dataset:
   num_workers: 14
 
 training:
-  epochs: 8
-  show_iters: 50
-  eval_iters: 3000
-  save_iters: 3000
+  epochs: 50
+  show_iters: 20
+  eval_iters: 10
+  save_iters: 10
 
 optimizer:
   type: Adam
