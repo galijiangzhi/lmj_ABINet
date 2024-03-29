@@ -117,7 +117,7 @@ class ImageDataset(Dataset):
             image_key, label_key = f'image-{idx + 1:09d}', f'label-{idx + 1:09d}'
             #根据idx生成图片和标签的键值对
             try:
-                label = str(txn.get(label_key.encode()), 'utf-8').strip('').replace(' ','').replace('་','') # 从数据库中根据label_key的键取出信息 label
+                label = str(txn.get(label_key.encode()), 'utf-8').strip('').replace(' ','').replace('་','').replace('།','') # 从数据库中根据label_key的键取出信息 label
                 print(f"baizhen _______________________________ label={label}")
                 print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}')
 
