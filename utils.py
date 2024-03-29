@@ -65,7 +65,7 @@ class CharsetMapper(object):
                 # print(f"baizhen----------label={label}")
                 char = m.group(2)
                 charset[label] = char
-                # print(f"baizhen----------char_set={charset}")
+                print(f'baizhen_______________________utils.charset={charset}')
         return charset
 
     def trim(self, text):

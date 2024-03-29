@@ -43,8 +43,8 @@ class ImageDataset(Dataset):
         self.return_idx, self.return_raw = return_idx, return_raw
         self.case_sensitive, self.is_training = case_sensitive, is_training
         self.data_aug, self.multiscales = data_aug, multiscales
-        self.charset = CharsetMapper(charset_path, max_length=max_length + 1)
-        self.character = self.charset.label_to_char.values()
+        self.charset = CharsetMapper(charset_path, max_length=max_length + 1)  #调用utile.py里的charsetmapper类构造字典
+        self.character = self.charset.label_to_char.values() #获取utile.charsetmapper里的标签tochar的返回值
         self.c = self.charset.num_classes
 
         self.env = lmdb.open(str(path), readonly=True, lock=False, readahead=False, meminit=False)
