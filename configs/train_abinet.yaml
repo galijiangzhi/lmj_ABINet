@@ -12,7 +12,7 @@ dataset:
       'data/vision/lmdb_train',
       'data/vision/lmj_train',
     ],
-    batch_size:50
+    batch_size: 50
   }
   test: {
     roots: [
