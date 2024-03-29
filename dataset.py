@@ -117,12 +117,12 @@ class ImageDataset(Dataset):
             image_key, label_key = f'image-{idx + 1:09d}', f'label-{idx + 1:09d}'
             #根据idx生成图片和标签的键值对
             try:
-                label = str(txn.get(label_key.encode()), 'utf-8').strip('').replace(' ','')  # 从数据库中根据label_key的键取出信息 label
+                label = str(txn.get(label_key.encode()), 'utf-8').strip('').replace(' ','').replace('་','') # 从数据库中根据label_key的键取出信息 label
                 print(f"baizhen _______________________________ label={label}")
                 print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}')
 
 
-                if not set(label.replace('།','')).issubset(self.character):
+                if not set(label).issubset(self.character):
                     print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}  中有不属于数据集的内容详情如下')
                     for i in label :
                         if not set(i).issubset(self.character):
