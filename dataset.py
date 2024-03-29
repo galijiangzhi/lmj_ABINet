@@ -117,7 +117,7 @@ class ImageDataset(Dataset):
             image_key, label_key = f'image-{idx + 1:09d}', f'label-{idx + 1:09d}'
             #根据idx生成图片和标签的键值对
             try:
-                #baizhen
+                #baizhen——120
                 label = str(txn.get(label_key.encode()), 'utf-8').strip('').replace(' ','').replace('་','').replace('།','') # 从数据库中根据label_key的键取出信息 label
                 print(f"baizhen _______________________________ label={label}")
                 print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}')
@@ -129,10 +129,11 @@ class ImageDataset(Dataset):
                     for i in label :
                         if not set(i).issubset(self.character):
                             print(f'{i} not in data')
-                            #baizhen
-                            break
-                            #baizhen
-                    return self._next_image(idx)    #这行代码检查标签中的字符是否都属于字符集self.character。如果有字符不属于字符集，则调用self._next_image(idx)方法获取下一张图像和标签。
+                    #baizhen
+                    #这行代码是我注释的 好让更多的数据通过检测，不满足的数据在上一个baizhen————120已经处理过了
+                    return self._next_image(idx)  # 这行代码检查标签中的字符是否都属于字符集self.character。如果有字符不属于字符集，则调用self._next_image(idx)方法获取下一张图像和标签。
+                    #baizhen
+
                 # label = re.sub('[^0-9a-zA-Z]+', '', label)
                 if self.check_length and self.max_length > 0:   #判断长度是否合法，不合法就跳过
                     if len(label) > self.max_length or len(label) <= 0:
