@@ -119,15 +119,20 @@ class ImageDataset(Dataset):
             #根据idx生成图片和标签的键值对
             try:
                 label = str(txn.get(label_key.encode()), 'utf-8').strip()  # 从数据库中根据label_key的键取出信息 label
+                print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}')
+
 
                 if not set(label).issubset(self.character):
+                    print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}  中有不属于数据集的内容')
                     return self._next_image(idx)    #这行代码检查标签中的字符是否都属于字符集self.character。如果有字符不属于字符集，则调用self._next_image(idx)方法获取下一张图像和标签。
                 # label = re.sub('[^0-9a-zA-Z]+', '', label)
                 if self.check_length and self.max_length > 0:   #判断长度是否合法，不合法就跳过
                     if len(label) > self.max_length or len(label) <= 0:
                         # logging.info(f'Long or short text image is found: {self.name}, {idx}, {label}, {len(label)}')
+                        print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}  长度不合法')
                         return self._next_image(idx)
                 label = label[:self.max_length]
+                print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel裁剪之后 == {label}')
 
                 imgbuf = txn.get(image_key.encode())  # image
                 buf = six.BytesIO()
