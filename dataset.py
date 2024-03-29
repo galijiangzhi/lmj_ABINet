@@ -15,16 +15,16 @@ class ImageDataset(Dataset):
     "`ImageDataset` read data from LMDB database."
 
     def __init__(self,
-                 path: PathOrStr,
-                 is_training: bool = True,
+                 path: PathOrStr,   #LMDB数据库的路径。
+                 is_training: bool = True,  #是否为训练模式
                  img_h: int = 32,
                  img_w: int = 100,
-                 max_length: int = 25,
+                 max_length: int = 40,
                  check_length: bool = True,
                  case_sensitive: bool = False,
                  # charset_path: str = 'data/charset_vn_with_space.txt',
-                 charset_path: str = 'data/vision/text.txt',
-                 convert_mode: str = 'RGB',
+                 charset_path: str = 'data/vision/text.txt', #字符集文件的路径。该文件包含了数据集中可能出现的字
+                 convert_mode: str = 'RGB', #图像转换模式
                  data_aug: bool = True,
                  deteriorate_ratio: float = 0.,
                  multiscales: bool = True,
@@ -32,7 +32,10 @@ class ImageDataset(Dataset):
                  return_idx: bool = False,
                  return_raw: bool = False,
                  **kwargs):
+        print(f"baizhen____________开始解析数据库")
         self.path, self.name = Path(path), Path(path).name
+        print(f"baizhen____________数据库path={self.path}")
+        print(f"baizhen____________数据库name={self.path}")
         assert self.path.is_dir() and self.path.exists(), f"{path} is not a valid directory."
         self.convert_mode, self.check_length = convert_mode, check_length
         self.img_h, self.img_w = img_h, img_w
@@ -46,31 +49,36 @@ class ImageDataset(Dataset):
 
         self.env = lmdb.open(str(path), readonly=True, lock=False, readahead=False, meminit=False)
         assert self.env, f'Cannot open LMDB dataset from {path}.'
+        print(f"baizhen____________成功打开数据库{self.path}")
         with self.env.begin(write=False) as txn:
-            self.length = int(txn.get('num-samples'.encode()))
+            self.length = int(txn.get('num-samples'.encode())) #在一个事务中，获取 LMDB 数据库中的样本数量，并将其转换为整数，并赋值给 self.length 属性。
 
         if self.is_training and self.data_aug:
             self.augment_tfs = transforms.Compose([
                 CVGeometry(degrees=45, translate=(0.0, 0.0), scale=(0.5, 2.), shear=(45, 15), distortion=0.5, p=0.5),
                 CVDeterioration(var=20, degrees=6, factor=4, p=0.25),
                 CVColorJitter(brightness=0.5, contrast=0.5, saturation=0.5, hue=0.1, p=0.25)
-            ])
-        self.totensor = transforms.ToTensor()
+            ])  #如果是训练模式且需要进行数据增强，则创建一个由多个数据增强操作组成的变换序列，并将其赋值给 self.augment_tfs 属性。
+        self.totensor = transforms.ToTensor()   #创建一个 ToTensor 变换对象，并将其赋值给 self.totensor 属性。
 
     def __len__(self):
+        #返回数据集长度
         return self.length
 
     def _next_image(self, index):
+        #返回下一个图像的索引
         next_index = random.randint(0, len(self) - 1)
         return self.get(next_index)
 
     def _check_image(self, x, pixels=6):
+        #检查图像是否符合指定的像素大小要求。
         if x.size[0] <= pixels or x.size[1] <= pixels:
             return False
         else:
             return True
 
     def resize_multiscales(self, img, borderType=cv2.BORDER_CONSTANT):
+        #多尺度调整图像大小的方法。
         def _resize_ratio(img, ratio, fix_h=True):
             if ratio * self.img_w < self.img_h:
                 if fix_h:
@@ -98,20 +106,24 @@ class ImageDataset(Dataset):
             return _resize_ratio(img, img.shape[0] / img.shape[1])  # keep aspect ratio
 
     def resize(self, img):
+        # 调整图像大小的方法。
         if self.multiscales:
             return self.resize_multiscales(img, cv2.BORDER_REPLICATE)
         else:
             return cv2.resize(img, (self.img_w, self.img_h))
 
     def get(self, idx):
+        # 根据索引获取图像和标签。
         with self.env.begin(write=False) as txn:
             image_key, label_key = f'image-{idx + 1:09d}', f'label-{idx + 1:09d}'
+            #根据idx生成图片和标签的键值对
             try:
-                label = str(txn.get(label_key.encode()), 'utf-8').strip()  # label
+                label = str(txn.get(label_key.encode()), 'utf-8').strip()  # 从数据库中根据label_key的键取出信息 label
+
                 if not set(label).issubset(self.character):
-                    return self._next_image(idx)
+                    return self._next_image(idx)    #这行代码检查标签中的字符是否都属于字符集self.character。如果有字符不属于字符集，则调用self._next_image(idx)方法获取下一张图像和标签。
                 # label = re.sub('[^0-9a-zA-Z]+', '', label)
-                if self.check_length and self.max_length > 0:
+                if self.check_length and self.max_length > 0:   #判断长度是否合法，不合法就跳过
                     if len(label) > self.max_length or len(label) <= 0:
                         # logging.info(f'Long or short text image is found: {self.name}, {idx}, {label}, {len(label)}')
                         return self._next_image(idx)
@@ -128,6 +140,7 @@ class ImageDataset(Dataset):
                     # logging.info(f'Invalid image is found: {self.name}, {idx}, {label}, {len(label)}')
                     return self._next_image(idx)
             except:
+                print(f'baizhen----------有一张图片处理失败 信息如下 name={self.name} idx={idx} label={label}')
                 import traceback
                 traceback.print_exc()
                 logging.info(f'Corrupted image is found: {self.name}, {idx}, {label}, {len(label)}')
@@ -135,22 +148,25 @@ class ImageDataset(Dataset):
             return image, label, idx
 
     def _process_training(self, image):
+        # 对训练图像进行处理的方法。
         if self.data_aug: image = self.augment_tfs(image)
         image = self.resize(np.array(image))
         return image
 
     def _process_test(self, image):
+        # 对测试图像进行处理的方法。
         return self.resize(np.array(image))  # TODO:move is_training to here
 
     def __getitem__(self, idx):
-        image, text, idx_new = self.get(idx)
+        # 根据索引获取图像和标签的方法。
+        image, text, idx_new = self.get(idx) #使用get方法获取图像，文本，新的索引
         # print(image, text, idx_new, idx)
         print(f'baizhen--------------------------------------------------------------------------------')
         print(f'baizhen----------idx{idx}')
         print(f'baizhen----------img{image}')
         print(f'baizhen----------text{text}')
         print(f'baizhen----------idx_new{idx_new}')
-        if not self.is_training: assert idx == idx_new, f'idx {idx} != idx_new {idx_new} during testing.'
+        if not self.is_training: assert idx == idx_new, f'idx {idx} != idx_new {idx_new} during testing.' #在非训练模式下检查索引idx是否与新的索引值idx_new相等。如果不相等，会抛出一个断言错误。
 
         if self.is_training:
             image = self._process_training(image)
