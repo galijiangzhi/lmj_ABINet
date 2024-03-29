@@ -124,12 +124,13 @@ class ImageDataset(Dataset):
                 print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}')
                 #baizhen
 
-
+                print(f'baizhen++++++++++++++++++++++++++{self.character}')
                 if not set(label).issubset(self.character):
                     print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}  中有不属于数据集的内容详情如下')
                     for i in label :
                         if not set(i).issubset(self.character):
                             print(f'{i} not in data')
+
                     #baizhen
                     #这行代码是我注释的 好让更多的数据通过检测，不满足的数据在上一个baizhen————120已经处理过了
                     # return self._next_image(idx)  # 这行代码检查标签中的字符是否都属于字符集self.character。如果有字符不属于字符集，则调用self._next_image(idx)方法获取下一张图像和标签。
