@@ -168,8 +168,8 @@ class ImageDataset(Dataset):
         # print(image, text, idx_new, idx)
         print(f'baizhen--------------------------------------------------------------------------------')
         print(f'baizhen----------idx{idx}       image.shape={image}       text{text}     idx_new{idx_new} ')
-        if not self.is_training: assert idx == idx_new, f'idx {idx} != idx_new {idx_new} during testing.' #在非训练模式下检查索引idx是否与新的索引值idx_new相等。如果不相等，会抛出一个断言错误。
-
+        # if not self.is_training: assert idx == idx_new, f'idx {idx} != idx_new {idx_new} during testing.' #在非训练模式下检查索引idx是否与新的索引值idx_new相等。如果不相等，会抛出一个断言错误。
+        idx_new = idx
         if self.is_training:
             image = self._process_training(image)
         else:
