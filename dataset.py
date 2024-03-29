@@ -19,7 +19,7 @@ class ImageDataset(Dataset):
                  is_training: bool = True,  #是否为训练模式
                  img_h: int = 32,
                  img_w: int = 100,
-                 max_length: int = 40,
+                 max_length: int = 70,
                  check_length: bool = True,
                  case_sensitive: bool = False,
                  # charset_path: str = 'data/charset_vn_with_space.txt',
@@ -129,7 +129,7 @@ class ImageDataset(Dataset):
                 if self.check_length and self.max_length > 0:   #判断长度是否合法，不合法就跳过
                     if len(label) > self.max_length or len(label) <= 0:
                         # logging.info(f'Long or short text image is found: {self.name}, {idx}, {label}, {len(label)}')
-                        print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}  长度不合法')
+                        print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel == {label}  长度不合法 长度为{len(label)}')
                         return self._next_image(idx)
                 label = label[:self.max_length]
                 print(f'baizhen!!!!!!!!!!!!!!!!!!!!!!!!lebel裁剪之后 == {label}')
