@@ -46,7 +46,7 @@ optimizer:
     periods: [6, 4],
     gamma: 0.1,
   }
-dataset_charset_path: data/vision/tibetan_charset.txt
+dataset_charset_path: data/vision/text.txt
 model:
   name: 'modules.model_abinet_iter.ABINetIterModel'
   iter_size: 3
