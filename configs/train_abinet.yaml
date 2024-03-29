@@ -24,7 +24,7 @@ dataset:
   }
   data_aug: True
   multiscales: False
-  num_workers: 6 #数据加载的线程数
+  num_workers: 2 #数据加载的线程数
 
 training:
   epochs: 20
@@ -46,7 +46,7 @@ optimizer:
     periods: [6, 4],
     gamma: 0.1,
   }
-
+dataset_charset_path: data/vision/text.txt
 model:
   name: 'modules.model_abinet_iter.ABINetIterModel'
   iter_size: 3
