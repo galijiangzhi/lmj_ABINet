@@ -60,7 +60,7 @@ model:
     backbone_ln: 3,
   }
   language: {
-    checkpoint:  workdir/pretrain-language-model/pretrain-language-model_76_230.pth,
+    checkpoint:  workdir/pretrain-language-model/pretrain-language-model_73_220.pth,
     num_layers: 4,
     loss_weight: 1.,
     detach: True,
