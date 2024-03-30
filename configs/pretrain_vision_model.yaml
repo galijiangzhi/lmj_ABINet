@@ -46,7 +46,7 @@ optimizer:
     periods: [6, 2],
     gamma: 0.1,
   }
-dataset_charset_path: data/vision/text.txt
+dataset_charset_path: data/vision/tibetan_charset.txt
 #设置路径
 model:
   name: 'modules.model_vision.BaseVision'
